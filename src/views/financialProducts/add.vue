@@ -1,19 +1,19 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" :rules="rules" label-width="100px" size="mini">
-      <el-form-item label="商品名称" prop="name" >
-        <el-input v-model="form.name" placeholder="商品名称" style="width:350px;" />
+    <el-form ref="form" :model="form" :rules="rules" label-width="200px" size="mini">
+      <el-form-item label="商品名称" prop="title" >
+        <el-input v-model="form.title" placeholder="商品名称" style="width:350px;" />
       </el-form-item>
 
-      <el-form-item label="库存" prop="stock">
-        <el-input v-model="form.stock" style="width:350px;" type="number"/>
+      <el-form-item label="数量" prop="total">
+        <el-input v-model="form.total" style="width:350px;" type="number"/>
       </el-form-item>
 
-      <el-form-item label="价格" prop="price">
-        <el-input v-model="form.price" style="width:350px;" type="number"/>
+      <el-form-item label="报单积分" prop="tradeScore">
+        <el-input v-model="form.tradeScore" style="width:350px;" type="number"/>
       </el-form-item>
 
-      <el-form-item label="商品图片" prop="picture">
+      <el-form-item label="商品图片" prop="images">
         <el-upload
           v-loading="loadingcardUp"
           :on-preview="handlePictureCardPreview"
@@ -21,7 +21,7 @@
           :on-remove="handleRemove"
           :http-request="uploads"
           :file-list="imgList"
-          v-model="form.picture"
+          v-model="form.images"
           action=""
           list-type="picture-card">
           <i class="el-icon-plus"/>
@@ -30,30 +30,33 @@
           <img :src="dialogImageUrl" width="100%" alt="">
         </el-dialog>
       </el-form-item>
-      <el-form-item label="简介" prop="synopsis">
-        <el-input v-model="form.synopsis" type="textarea" style="width:350px;" />
+      <el-form-item label="开始时间" prop="startTime">
+        <el-date-picker
+          v-model="form.startTime"
+          style="width:350px;"
+          type="datetime"
+          placeholder="选择日期时间"
+          align="right"/>
       </el-form-item>
-      <el-form-item label="商品介绍" prop="details">
-        <!-- 图片上传组件辅助-->
-        <el-upload
-          id="quill-upload"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :http-request="quillUpload"
-          class="avatar-uploader"
-          action=""
-          hidden="true"
-        />
-        <quill-editor
-          v-loading="quillUpdateImg"
-          ref="myTextEditor"
-          v-model="form.details"
-          :options="editorOption"
-          height="300px"
-          @blur="onEditorBlur($event)"
-          @focus="onEditorFocus($event)"
-          @ready="onEditorReady($event)"/>
+      <el-form-item label="结束时间" prop="endTime">
+        <el-date-picker
+          v-model="form.endTime"
+          style="width:350px;"
+          type="datetime"
+          placeholder="选择日期时间"
+          align="right"/>
       </el-form-item>
+      <el-form-item label="收益率" prop="annualizedRate">
+        <el-input v-model="form.annualizedRate" style="width:350px;" type="number">
+          <template slot="append">%</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="到期后转入消费积分占比" prop="consumeRate">
+        <el-input v-model="form.consumeRate" style="width:350px;" type="number">
+          <template slot="append">%</template>
+        </el-input>
+      </el-form-item>
+
       <div >
         <el-form-item label=" ">
           <el-button v-loading="loading" type="primary" @click="onSubmit('form')">确定</el-button>
@@ -93,6 +96,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { numberIsSuccess } from '@/utils/validate'
 // 工具栏配置
 const toolbarOptions = [
@@ -144,22 +148,7 @@ export default {
       dialogVisible: false,
       multipleSelection: [],
       form: {
-        assembleGoodsFormatList: [],
-        goodsName: '',
-        goodsClassifyId: '',
-        status: '',
-        originalPrice: '',
-        marketPrice: '',
-        platformPrice: '',
-        memberPrice: '',
-        onlineTime: '',
-        offlineTime: '',
-        sorts: '',
-        turplusTotal: '',
-        recommend: '',
-        quantityPurchased: '',
-        pictures: '',
-        details: '<h2>I am Example</h2>'
+
       },
       dynamicTags: [],
       longitude: '',
@@ -174,25 +163,30 @@ export default {
       classify: [],
       tableData: [],
       rules: {
-        name: [
+        title: [
           { required: true, message: '请输入商品名称', trigger: 'blur' }
         ],
 
-        synopsis: [
-          { required: true, message: '请输入简介', trigger: 'blur' }
+        total: [
+          { required: true, message: '请输入数量', trigger: 'blur' }
         ],
-        price: [
-          { required: true, message: '请输入价格', trigger: 'blur' },
-          { validator: numberIsSuccess, trigger: 'blur' }
+        tradeScore: [
+          { required: true, message: '请输入报单积分', trigger: 'blur' }
         ],
-        stock: [
-          { required: true, message: '请输入库存', trigger: 'blur' }
+        images: [
+          { required: true, message: '请上传图片', trigger: 'blur' }
         ],
-        picture: [
-          { required: true, message: '请上传商品图片', trigger: 'blur' }
+        startTime: [
+          { required: true, message: '请选择开始时间', trigger: 'blur' }
         ],
-        details: [
-          { required: true, message: '请输入商品介绍', trigger: 'blur' }
+        endTime: [
+          { required: true, message: '请选择结束时间', trigger: 'blur' }
+        ],
+        annualizedRate: [
+          { required: true, message: '请输入收益率', trigger: 'blur' }
+        ],
+        consumeRate: [
+          { required: true, message: '到期后转入消费积分占比', trigger: 'blur' }
         ]
       }
     }
@@ -225,12 +219,12 @@ export default {
       const id = this.$route.params.id
       if (id !== ':id') {
         this.loading = true
-        this.$store.dispatch('Doodsdetail', { id: id }).then((res) => {
+        this.$store.dispatch('FinancialProductstail', { id: id }).then((res) => {
           this.form = res.data
-          res.data.pictures.forEach(l => {
+          res.data.imagess.forEach(l => {
             this.imgList.push({ url: l })
           })
-          this.form.picture = this.imgList.map(l => l.url).join(',')
+          this.form.images = this.imgList.map(l => l.url).join(',')
           this.loading = false
           this.isupdate = true
         }).catch(() => {
@@ -266,8 +260,9 @@ export default {
 
       this.form.assembleTagIds = assembleTagList
       this.loading = true
-      delete this.form.createDate
-      this.$store.dispatch('CreateOrEditGoods', this.form).then((res) => {
+      this.form.startTime = this.dateFormat1(this.form.startTime)
+      this.form.endTime = this.dateFormat1(this.form.endTime)
+      this.$store.dispatch('CreateOrEditFinancialProducts', this.form).then((res) => {
         if (res.code === 0) {
           if (this.isupdate) {
             this.$message('修改成功!')
@@ -283,7 +278,7 @@ export default {
       })
     },
     onCancel() {
-      this.$router.push('/goods/list')
+      this.$router.push('/financialProducts/list')
     },
     beforeAvatarUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -301,7 +296,7 @@ export default {
         console.log(res)
         if (res.code === 0) {
           this.imgList.push({ name: param.file.name, url: res.data[0] })
-          this.form.picture = this.imgList.map(l => l.url).join(',')
+          this.form.images = this.imgList.map(l => l.url).join(',')
         }
         That.loadingcardUp = false
       }).catch(() => {
@@ -313,7 +308,7 @@ export default {
       if (index > -1) {
         this.imgList.splice(index, 1)
       }
-      this.form.picture = this.imgList.map(l => l.url).join(',')
+      this.form.images = this.imgList.map(l => l.url).join(',')
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url
@@ -374,6 +369,13 @@ export default {
       }).catch(() => {
         this.loading1 = false
       })
+    },
+
+    dateFormat1: function(date) {
+      if (date === undefined || date === '') {
+        return ''
+      }
+      return moment(date).format('YYYY/MM/DD HH:mm:ss')
     },
     addlnglat() {
       if (this.dynamicTags) {

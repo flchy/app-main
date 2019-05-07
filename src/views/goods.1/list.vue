@@ -9,16 +9,16 @@
       >
         <el-form-item
           label="搜索"
-          prop="name"
+          prop="goodsName"
         >
-          <el-input v-model="form.name" placeholder="商品名称/编号" @change="phoneChange" />
+          <el-input v-model="form.goodsName" placeholder="商品名称/编号" @change="phoneChange" />
         </el-form-item>
         <el-button
           type="primary"
           size="mini"
           @click="addColonel"
         >添加商品</el-button>
-        <!-- <el-button
+        <el-button
           type="primary"
           size="mini"
           @click="toType"
@@ -31,7 +31,7 @@
         <el-button
           type="primary"
           size="mini"
-        >导出表格</el-button> -->
+        >导出表格</el-button>
       </el-form>
     </div>
     <el-table
@@ -42,44 +42,70 @@
       style="width: 100%"
     >
       <el-table-column
-        prop="name"
+        prop="goodsName"
         label="商品名称"
       />
       <el-table-column
-        prop="price"
-        label="价格"
+        prop="classifyName"
+        label="商品分类"
       />
       <el-table-column
-        prop="stock"
+        prop="originalPrice"
+        label="成本价"
+        width="100"
+      />
+      <el-table-column
+        prop="marketPrice"
+        label="市场价"
+        width="100"
+      />
+      <el-table-column
+        prop="platformPrice"
+        label="平台价"
+        width="100"
+      />
+
+      <el-table-column
+        prop="memberPrice"
+        label="会员价"
+        width="100"
+      />
+      <el-table-column
+        prop="turplusTotal"
         label="商品库存"
         width="100"
       />
       <el-table-column
-        label="商品图片"
-        width="300"
-      >
-        <template slot-scope="scope">
-          <el-tooltip v-for="item in scope.row.pictures" :key="item" placement="top">
-            <div slot="content">
-              <img :src="item" width="400px" height="400px">
-            </div>
-            <img :src="item" width="40px" height="40px" style="margin-right:10px">
-          </el-tooltip>
-        </template>
-      </el-table-column>
+        prop="sales"
+        label="商品销量"
+        width="100"
+      />
       <el-table-column
-        label="创建时间"
-      >
-        <template slot-scope="scope">
-          {{ dateFormat(scope.row.createDate) }}
-        </template>
-      </el-table-column>
+        prop="salesVolume"
+        label="销售额"
+      />
       <el-table-column
         fixed="right"
         label="操作"
-        width="150"
+        width="340"
       >
         <template slot-scope="scope">
+          <el-button
+            v-if="!scope.row.recommend"
+            type="primary"
+            size="mini"
+            @click="editRecommend(scope.row,)"
+          >设为今日推荐</el-button>
+          <el-button
+            v-else
+            size="mini"
+            @click="editRecommend(scope.row)"
+          >取消今日推荐</el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="toDetails(scope.row.id)"
+          >详情</el-button>
           <el-button
             type="primary"
             size="mini"
@@ -108,7 +134,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   data() {
     return {
@@ -117,7 +142,7 @@ export default {
       pageSize: 10,
       pageNum: 1,
       form: {
-        name: ''
+        goodsName: ''
       },
       loading: false
     }
@@ -128,12 +153,6 @@ export default {
   methods: {
     init() {
       this.getPage()
-    },
-    dateFormat: function(date) {
-      if (date === undefined || date === '') {
-        return ''
-      }
-      return moment(date).format('YYYY-MM-DD HH:mm')
     },
     getPage() {
       this.loading = true
@@ -158,7 +177,7 @@ export default {
       this.getPage()
     },
     phoneChange(data) {
-      this.form.name = data
+      this.form.goodsName = data
       this.form.pageSize = 10
       this.form.pageNum = 1
       this.getPage()
@@ -186,7 +205,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.loading = true
-        this.$store.dispatch('Doodsgoods', { id: id }).then((res) => {
+        this.$store.dispatch('Doodsgoods', { goodId: id }).then((res) => {
           if (res.code === 0) {
             this.$message({
               type: 'success',

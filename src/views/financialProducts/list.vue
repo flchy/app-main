@@ -42,16 +42,31 @@
       style="width: 100%"
     >
       <el-table-column
-        prop="name"
+        prop="title"
         label="商品名称"
       />
       <el-table-column
-        prop="price"
-        label="价格"
+        prop="tradeScore"
+        label="所需报单积分"
       />
       <el-table-column
-        prop="stock"
-        label="商品库存"
+        prop="total"
+        label="数量"
+        width="100"
+      />
+      <el-table-column
+        prop="annualizedRate"
+        label="收益率"
+        width="100"
+      />
+      <el-table-column
+        prop="consumeRate"
+        label="消费积分占比"
+        width="100"
+      />
+      <el-table-column
+        prop="days"
+        label="冻结周期(天)"
         width="100"
       />
       <el-table-column
@@ -59,7 +74,7 @@
         width="300"
       >
         <template slot-scope="scope">
-          <el-tooltip v-for="item in scope.row.pictures" :key="item" placement="top">
+          <el-tooltip v-for="item in scope.row.imagess" :key="item" placement="top">
             <div slot="content">
               <img :src="item" width="400px" height="400px">
             </div>
@@ -68,10 +83,17 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        label="开始时间"
       >
         <template slot-scope="scope">
-          {{ dateFormat(scope.row.createDate) }}
+          {{ dateFormat(scope.row.startTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="结束时间"
+      >
+        <template slot-scope="scope">
+          {{ dateFormat(scope.row.endTime) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -139,7 +161,7 @@ export default {
       this.loading = true
       this.form.pageSize = this.pageSize
       this.form.pageNum = this.pageNum
-      this.$store.dispatch('GoodsPage', this.form).then((res) => {
+      this.$store.dispatch('FinancialProductsPage', this.form).then((res) => {
         this.tableData = res.data.data
         this.pageSize = res.data.size
         this.pageNum = res.data.pageNum
@@ -164,7 +186,7 @@ export default {
       this.getPage()
     },
     addColonel() {
-      this.$router.push('/goods/add/:id')
+      this.$router.push('/financialProducts/add/:id')
     },
     toType() {
       this.$router.push('/goods/type')
@@ -173,7 +195,7 @@ export default {
       this.$router.push('/goods/label')
     },
     editColonel(id) {
-      this.$router.push('/goods/add/' + id)
+      this.$router.push('/financialProducts/add/' + id)
     },
     toDetails(id) {
       // this.$router.push('/shop/details/' + id)

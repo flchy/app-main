@@ -6,9 +6,9 @@ import qs from 'qs'
  */
 export function goodsPage(params) {
   return request({
-    url: '/assemble/admin/goods/selectPage',
+    url: '/admin/goods/page',
     method: 'post',
-    data: params
+    data: qs.stringify(params)
   })
 }
 /**
@@ -82,9 +82,9 @@ export function deleteTag(param) {
  */
 export function createOrEditGoods(param) {
   return request({
-    url: '/assemble/admin/goods/create',
+    url: '/admin/goods/addOrUpdate',
     method: 'post',
-    data: param
+    data: qs.stringify(param)
   })
 }
 /**
@@ -93,7 +93,7 @@ export function createOrEditGoods(param) {
  */
 export function doodsdetail(param) {
   return request({
-    url: '/assemble/admin/goods/detail',
+    url: '/admin/goods/detail',
     method: 'post',
     data: qs.stringify(param)
   })
@@ -104,7 +104,7 @@ export function doodsdetail(param) {
  */
 export function doodsgoods(param) {
   return request({
-    url: '/assemble/admin/goods/delete',
+    url: '/admin/goods/del',
     method: 'post',
     data: qs.stringify(param)
   })

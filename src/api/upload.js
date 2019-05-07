@@ -11,3 +11,11 @@ export function uploadImageBase64(params) {
     data: qs.stringify(params)
   })
 }
+
+export function uploadImage(params) {
+  return request({
+    url: '/admin/uploadImg',
+    method: 'post',
+    data: params
+  })
+}

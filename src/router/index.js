@@ -148,6 +148,28 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/financialProducts',
+    component: Layout,
+    redirect: '/financialProducts',
+    meta: { title: '抢单商品管理', icon: 'example' },
+    name: '抢单商品管理',
+    children: [
+      {
+        path: 'list',
+        name: '抢单商品管理',
+        component: () => import('@/views/financialProducts/list'),
+        meta: { title: '抢单商品管理', icon: 'form' }
+      },
+      {
+        path: 'add/:id',
+        name: '抢单商品操作',
+        hidden: true,
+        component: () => import('@/views/financialProducts/add'),
+        meta: { title: '抢单商品操作', icon: 'form' }
+      }
+    ]
+  },
+  {
     path: '/order',
     component: Layout,
     redirect: '/order',
@@ -263,6 +285,96 @@ export const constantRouterMap = [
         hidden: true,
         component: () => import('@/views/member/purchase'),
         meta: { title: '购买记录', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/systemconfig',
+    component: Layout,
+    redirect: '/systemconfig',
+    meta: { title: '系统配置', icon: 'example' },
+    name: '系统配置',
+    children: [
+      {
+        path: 'list',
+        name: '系统配置',
+        component: () => import('@/views/systemconfig/list'),
+        meta: { title: '系统配置', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/payway',
+    component: Layout,
+    redirect: '/payway',
+    meta: { title: '支付方式配置', icon: 'example' },
+    name: '支付方式配置',
+    children: [
+      {
+        path: 'list',
+        name: '支付方式配置',
+        component: () => import('@/views/payway/list'),
+        meta: { title: '支付方式配置', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/topuporder',
+    component: Layout,
+    redirect: '/topuporder',
+    meta: { title: '充值订单管理', icon: 'example' },
+    name: '充值订单管理',
+    children: [
+      {
+        path: 'list',
+        name: '充值订单管理',
+        component: () => import('@/views/topuporder/list'),
+        meta: { title: '充值订单管理', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/financialProductsOrder',
+    component: Layout,
+    redirect: '/financialProductsOrder',
+    meta: { title: '抢单订单管理', icon: 'example' },
+    name: '抢单订单管理',
+    children: [
+      {
+        path: 'list',
+        name: '抢单订单管理',
+        component: () => import('@/views/financialProductsOrder/list'),
+        meta: { title: '抢单订单管理', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/userEncashment',
+    component: Layout,
+    redirect: '/userEncashment',
+    meta: { title: '提现管理', icon: 'example' },
+    name: '提现管理',
+    children: [
+      {
+        path: 'list',
+        name: '提现管理',
+        component: () => import('@/views/userEncashment/list'),
+        meta: { title: '提现管理', icon: 'form' }
+      }
+    ]
+  },
+  {
+    path: '/shoppingOrder',
+    component: Layout,
+    redirect: '/shoppingOrder',
+    meta: { title: '购物订单管理', icon: 'example' },
+    name: '购物订单管理',
+    children: [
+      {
+        path: 'list',
+        name: '购物订单管理',
+        component: () => import('@/views/shoppingOrder/list'),
+        meta: { title: '购物订单管理', icon: 'form' }
       }
     ]
   },
