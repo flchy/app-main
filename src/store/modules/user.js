@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/login'
+import { login, logout, getInfo, changePassword } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -79,6 +79,16 @@ const user = {
         commit('SET_TOKEN', '')
         removeToken()
         resolve()
+      })
+    },
+    // 修改密码
+    ChangePassword({ commit, state }, paream) {
+      return new Promise((resolve, reject) => {
+        changePassword(paream).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
       })
     }
   }

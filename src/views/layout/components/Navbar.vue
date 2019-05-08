@@ -14,10 +14,37 @@
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
+          <span
+            style="display:block;"
+            @click="changePassword" >修改密码</span>
+        </el-dropdown-item>
+        <el-dropdown-item divided>
           <span style="display:block;" @click="logout">注销</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
+    <el-dialog v-if="addDialog" :visible.sync="addDialog" title="修改密码" size="small">
+      <el-form v-loading="loadingDialog" ref="form" :rules="rules" :model="form" label-width="200px" size="mini">
+        <el-form-item label="密码" prop="password" >
+          <el-input v-model="form.password" placeholder="密码" type="password" style="width:250px;" />
+        </el-form-item>
+        <el-form-item label="新密码" prop="changePassword">
+          <el-input v-model="form.changePassword" placeholder="新密码" type="password" style="width:250px;"/>
+        </el-form-item>
+        <el-form-item label="重复密码" prop="repeatPassword">
+          <el-input v-model="form.repeatPassword" placeholder="重复密码" type="password" style="width:250px;"/>
+        </el-form-item>
+        <div style="margin-top:20px;text-align: center;">
+          <el-button
+            type="primary"
+            size="mini"
+            @click="updatePed('form')"
+          >确定</el-button>
+          <el-button size="mini" @click="addDialog=false">Cancel</el-button>
+
+        </div>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -30,6 +57,33 @@ export default {
   components: {
     Breadcrumb,
     Hamburger
+  },
+  data() {
+    const validatePass = (rule, value, callback) => {
+      if (value.length < 5) {
+        callback(new Error('密码不能小于5位'))
+      } else {
+        callback()
+      }
+    }
+    return {
+      addDialog: false,
+      loadingDialog: false,
+      rules: {
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+        ],
+        changePassword: [
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: validatePass }
+        ],
+        repeatPassword: [
+          { required: true, message: '请输入重复密码', trigger: 'blur' },
+          { required: true, trigger: 'blur', validator: validatePass }
+        ]
+      },
+      form: {}
+    }
   },
   computed: {
     ...mapGetters([
@@ -44,6 +98,34 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
+      })
+    },
+    changePassword() {
+      this.addDialog = true
+      this.form = {}
+    },
+    updatePed(formName) {
+      let canCommit = true
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          canCommit = true
+        } else {
+          canCommit = false
+        }
+      })
+      if (!canCommit) {
+        return
+      }
+      this.loadingDialog = true
+      delete this.form.createDate
+      this.$store.dispatch('ChangePassword', this.form).then((res) => {
+        if (res.code === 0) {
+          this.$message('修改成功!')
+          this.logout()
+        }
+        this.loadingDialog = false
+      }).catch(() => {
+        this.loadingDialog = false
       })
     }
   }

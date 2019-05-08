@@ -1,7 +1,11 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <div class="menulogo">
-      <a class="logo" href="/">LOGO</a>
+      <a class="logo" href="/">
+        <img
+          :src="logo"
+          style="-moz-border-radius: 21px;-webkit-border-radius: 21px;">
+      </a>
     </div>
     <el-menu
       :show-timeout="200"
@@ -21,9 +25,13 @@
 import { mapGetters } from 'vuex'
 import variables from '@/styles/variables.scss'
 import SidebarItem from './SidebarItem'
+import logo from '@/assets/logo.jpg'
 
 export default {
   components: { SidebarItem },
+  data() {
+    return { logo: logo }
+  },
   computed: {
     ...mapGetters([
       'sidebar'
@@ -38,5 +46,6 @@ export default {
       return !this.sidebar.opened
     }
   }
+
 }
 </script>

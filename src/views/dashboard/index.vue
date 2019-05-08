@@ -2,8 +2,10 @@
   <div class="dashboard-container">
     <!-- <div class="dashboard-text">name:{{ name }}</div>
     <div class="dashboard-text">roles:<span v-for="role in roles" :key="role">{{ role }}</span></div> -->
+
     <div id="myChart" :style="{width: '800px', height: '600px'}"/>
-    <div style="width:1000px">
+    <!-- <h1 style="text-align: center;">Hello world</h1> -->
+    <!-- <div style="width:1000px">
       <el-form ref="form" inline size="mini">
 
         <el-form-item label="今日总单数:" label-width="200px">
@@ -31,7 +33,7 @@
           <label style="color: #ccc;width:300px;display: block;">{{ Data.wholeMoney }}元</label>
         </el-form-item>
       </el-form>
-    </div>
+  </div>-->
   </div>
 </template>
 
@@ -116,17 +118,17 @@ export default {
       })
     },
     init() {
-      this.$store.dispatch('OrderStatistics').then((res) => {
-        if (res.code === 0) {
-          //
-          this.Data = res.data
-          this.monthList = res.data.ordersMonth.map(l => l.month)
-          this.incomeList = res.data.ordersMonth.map(l => l.money)
-          this.drawLine()
-        }
-      }).catch(() => {
-        this.loading = false
-      })
+      // this.$store.dispatch('OrderStatistics').then((res) => {
+      //   if (res.code === 0) {
+      //     //
+      //     this.Data = res.data
+      //     this.monthList = res.data.ordersMonth.map(l => l.month)
+      //     this.incomeList = res.data.ordersMonth.map(l => l.money)
+      //     this.drawLine()
+      //   }
+      // }).catch(() => {
+      //   this.loading = false
+      // })
     }
   }
 }
