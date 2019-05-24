@@ -25,8 +25,8 @@
     </el-dropdown>
     <el-dialog v-if="addDialog" :visible.sync="addDialog" title="修改密码" size="small">
       <el-form v-loading="loadingDialog" ref="form" :rules="rules" :model="form" label-width="200px" size="mini">
-        <el-form-item label="密码" prop="password" >
-          <el-input v-model="form.password" placeholder="密码" type="password" style="width:250px;" />
+        <el-form-item label="旧密码" prop="password" >
+          <el-input v-model="form.password" placeholder="旧密码" type="password" style="width:250px;" />
         </el-form-item>
         <el-form-item label="新密码" prop="changePassword">
           <el-input v-model="form.changePassword" placeholder="新密码" type="password" style="width:250px;"/>
@@ -71,7 +71,7 @@ export default {
       loadingDialog: false,
       rules: {
         password: [
-          { required: true, message: '请输入密码', trigger: 'blur' }
+          { required: true, message: '请输入旧密码', trigger: 'blur' }
         ],
         changePassword: [
           { required: true, message: '请输入新密码', trigger: 'blur' },

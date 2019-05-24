@@ -19,6 +19,7 @@ import financialProductsOrder from './modules/financialProductsOrder'
 import userEncashment from './modules/userEncashment'
 import shoppingOrder from './modules/shoppingOrder'
 import homePageDetails from './modules/homePageDetails'
+import notice from './modules/notice'
 import upload from './modules/upload'
 import getters from './getters'
 
@@ -45,7 +46,8 @@ const store = new Vuex.Store({
     userEncashment,
     shoppingOrder,
     appUser,
-    homePageDetails
+    homePageDetails,
+    notice
   },
   getters
 })

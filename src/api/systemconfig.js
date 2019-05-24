@@ -21,3 +21,14 @@ export function putSystemConfig(param) {
     data: qs.stringify(param)
   })
 }
+/**
+ * 修改下载系统配置
+ * @param {*} params
+ */
+export function putDownloadUpdate(param) {
+  return request({
+    url: '/admin/systemConfig/downloadUpdate',
+    method: 'post',
+    data: qs.stringify(param)
+  })
+}

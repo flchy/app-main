@@ -39,8 +39,8 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
 
-      // 1001 用户被踢出或未登录
-      if (res.code === 1001) {
+      // 1014 用户被踢出或未登录
+      if (res.code === 1014) {
         MessageBox.confirm(
           '你已被登出，可以取消继续留在该页面，或者重新登录',
           '确定登出',

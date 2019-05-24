@@ -217,6 +217,21 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/notice',
+    component: Layout,
+    redirect: '/notice',
+    meta: { title: '公告管理', icon: 'example' },
+    name: '公告管理',
+    children: [
+      {
+        path: 'index',
+        name: '公告管理',
+        component: () => import('@/views/notice/index'),
+        meta: { title: '公告管理', icon: 'form' }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
